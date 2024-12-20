@@ -25,21 +25,11 @@ export const getPost = async (id, token) => {
     Authorization: token || "",
   }
 
-  // Log the request details
-  console.log("Fetching post:", {
-    url,
-    headers,
-  })
-
   try {
     const res = await fetch(url, {
       method: "GET",
       headers,
     })
-
-    // Log the response status and headers
-    console.log("Response status:", res.status)
-    console.log("Response headers:", Array.from(res.headers.entries()))
 
     if (!res.ok) {
       throw new Error("Failed to fetch data")
@@ -47,12 +37,8 @@ export const getPost = async (id, token) => {
 
     const data = await res.json()
 
-    // Log the response data
-    console.log("Response data:", data)
-
     return data
   } catch (error) {
-    // Log the error message
     console.error("Error fetching post:", error.message)
     throw error
   }
