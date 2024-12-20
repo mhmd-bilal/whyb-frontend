@@ -2,8 +2,8 @@
 
 import { FC, useState } from "react"
 import { useRouter } from "next/navigation"
-import { postData } from "@/utils/api"
-import { Storage } from "@ionic/storage"
+import { postsApi } from "@/utils/api"
+import { useAuth } from "@/contexts/auth-context"
 import { IconBrandSpotify } from "@tabler/icons-react"
 import { Youtube } from "lucide-react"
 
@@ -20,9 +20,7 @@ const AddPostPage: FC = () => {
   const [platform, setPlatform] = useState<string | null>(null)
   const router = useRouter()
   const { toast } = useToast()
-
-  const storage = new Storage()
-  storage.create()
+  const { token } = useAuth()
 
   const handleLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const url = e.target.value
@@ -49,24 +47,17 @@ const AddPostPage: FC = () => {
       caption: postContent,
     }
 
-    const loadingToast = {
-      description: "Creating post... Please wait.",
-    }
-
     try {
-      const response = await postData(
-        "/post/",
-        postDetail,
-        await storage.get("authToken")
-      )
+      const response = await postsApi.createPost(postDetail, token as string)
       setLink("")
       setPostContent("")
       toast({
-        description: response.message || "Post created successfully!",
+        description: "Post created successfully!",
       })
       setLoading(false)
       router.push("/")
     } catch (error: unknown) {
+      setLoading(false)
       if (error instanceof Error) {
         toast({
           variant: "destructive",

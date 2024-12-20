@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { useRouter } from "next/navigation"
-import { postData } from "./../utils/api"
+import { authApi } from "@/utils/api"
 
 export function SignupForm({
   className,
@@ -34,16 +34,16 @@ export function SignupForm({
     e.preventDefault()
 
     const userData = {
-      name,
+      username: name,
       email,
       password,
       bio,
     }
 
     try {
-      const response = await postData("/signup/", userData)
+      const response = await authApi.signup(userData)
       toast({
-        description: response.message,
+        description: "Account created successfully!",
       })
       router.push("/login")
     } catch (error: unknown) {
