@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { postData } from "@/utils/api"
-import { Storage } from "@ionic/storage"
+import { useAuth } from "@/contexts/auth-context"
 
 import { useToast } from "@/hooks/use-toast"
 import { Button } from "@/components/ui/button"
@@ -23,11 +23,9 @@ export function LoginForm({
 }: React.ComponentPropsWithoutRef<"div">) {
   const { toast } = useToast()
   const router = useRouter()
+  const { login } = useAuth()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-
-  const storage = new Storage()
-  storage.create()
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault()
@@ -42,11 +40,7 @@ export function LoginForm({
       toast({
         description: response.message,
       })
-      await storage.set(
-        "authToken",
-        `${response.token_type} ${response.access_token}`
-      )
-      await storage.set("loggedIn", true);
+      login(`${response.token_type} ${response.access_token}`)
       router.push("/")
     } catch (error: unknown) {
       if (error instanceof Error) {

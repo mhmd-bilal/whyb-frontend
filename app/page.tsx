@@ -34,7 +34,7 @@ export default function IndexPage() {
           with the rest of us.
         </h1>
         <p className="max-w-[700px] text-lg text-muted-foreground">
-          Accessible and comfortable experience that you enjoy.
+          Accessible and comfortable experience that you would enjoy. 
         </p>
       </div>
       <Posts />

@@ -10,6 +10,7 @@ import { Toaster } from "@/components/ui/toaster"
 import { SiteHeader } from "@/components/site-header"
 import { TailwindIndicator } from "@/components/tailwind-indicator"
 import { ThemeProvider } from "@/components/theme-provider"
+import { AuthProvider } from "@/contexts/auth-context"
 
 const queryClient = new QueryClient();
 
@@ -28,16 +29,18 @@ export default function RootLayout({ children }: RootLayoutProps) {
             fontSans.variable
           )}
         >
-          <QueryClientProvider client={queryClient}>
-            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-              <div className="relative flex min-h-screen flex-col">
-                <SiteHeader />
-                <div className="flex-1">{children}</div>
-              </div>
-              <Toaster />
-              <TailwindIndicator />
-            </ThemeProvider>
-          </QueryClientProvider>
+          <AuthProvider>
+            <QueryClientProvider client={queryClient}>
+              <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+                <div className="relative flex min-h-screen flex-col">
+                  <SiteHeader />
+                  <div className="flex-1">{children}</div>
+                </div>
+                <Toaster />
+                <TailwindIndicator />
+              </ThemeProvider>
+            </QueryClientProvider>
+          </AuthProvider>
         </body>
       </html>
     </>
