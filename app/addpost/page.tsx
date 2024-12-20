@@ -78,7 +78,7 @@ const AddPostPage: FC = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center p-4 space-y-4 max-w-xl mx-auto pt-14" >
+    <div className="flex flex-col items-center justify-center p-4 space-y-4 max-w-xl mx-auto pt-14">
       <h1 className="text-2xl font-semibold text-center">Add New Post</h1>
 
       <div className="w-full space-y-4">
@@ -97,7 +97,7 @@ const AddPostPage: FC = () => {
               id="link"
               placeholder="Enter post URL"
               value={link}
-              disabled={loading}
+              disabled={loading === true} 
               onChange={handleLinkChange}
               className="w-full"
             />
@@ -113,7 +113,7 @@ const AddPostPage: FC = () => {
             placeholder="Write your post content here..."
             value={postContent}
             onChange={handleContentChange}
-            disabled={loading}
+            disabled={loading === true} 
             rows={6}
             className="w-full border p-2 rounded-md"
           />
@@ -122,7 +122,7 @@ const AddPostPage: FC = () => {
         <Button
           onClick={handleSubmit}
           className="w-full"
-          disabled={!link || !postContent || loading}
+          disabled={!link || !postContent || loading === true}
         >
           {loading ? <LoadingSpinner /> : "Submit Post"}
         </Button>

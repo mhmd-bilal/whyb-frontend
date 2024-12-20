@@ -29,7 +29,7 @@ export function Avatar({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon">
-          <User className="h-[1.5rem] w-[1.3rem]" />
+          <User className="h-6 w-[1.3rem]" />
           <span className="sr-only">Profile</span>
         </Button>
       </DropdownMenuTrigger>

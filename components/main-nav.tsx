@@ -15,7 +15,7 @@ export function MainNav({ items }: MainNavProps) {
     <>
       <div className="gap-6 md:gap-10 md:flex-row hidden sm:flex">
         <Link href="/" className="flex items-center space-x-2">
-          <Icons.logo className="h-6 w-6" />
+          <Icons.logo className="size-6" />
           <span className="inline-block font-bold">{siteConfig.name}</span>
         </Link>
         {items?.length ? (
@@ -42,7 +42,7 @@ export function MainNav({ items }: MainNavProps) {
       <div className="fixed top-0 left-0 right-0 sm:hidden bg-transparent z-0">
         <div className="container h-16 flex justify-between items-center px-2">
           <Link href="/" className="flex items-center space-x-2">
-            <Icons.logo className="h-6 w-6" />
+            <Icons.logo className="size-6" />
             <span className="inline-block font-bold">{siteConfig.name}</span>
           </Link>
         </div>
