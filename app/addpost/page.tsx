@@ -84,7 +84,7 @@ const AddPostPage: FC = () => {
       <div className="w-full space-y-4">
         <div className="w-full">
           <label htmlFor="link" className="block text-sm font-medium mb-2">
-            Post Link:
+            Song Link
           </label>
           <div className="flex items-center justify-center space-x-3 mb-2">
             {platform === "spotify" && (
@@ -95,7 +95,7 @@ const AddPostPage: FC = () => {
             )}
             <Input
               id="link"
-              placeholder="Enter post URL"
+              placeholder="Paste your song URL"
               value={link}
               disabled={loading === true} 
               onChange={handleLinkChange}
@@ -110,7 +110,7 @@ const AddPostPage: FC = () => {
           </label>
           <Textarea
             id="content"
-            placeholder="Write your post content here..."
+            placeholder="Write about the song..."
             value={postContent}
             onChange={handleContentChange}
             disabled={loading === true} 

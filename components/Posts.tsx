@@ -49,6 +49,7 @@ export function Posts() {
             <Input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              className="xs:text-xs"
               placeholder="Search for posts, tags, users, or anything..."
               style={{
                 width: "100%",
@@ -59,7 +60,11 @@ export function Posts() {
           </div>
         </div>
       ) : (
-        <div className="flex flex-col md:flex-row gap-4">
+        <>
+        <p className="max-w-[700px] text-lg text-muted-foreground">
+        Log in or sign up to view posts
+        </p>
+        <div className="flex flex-col md:flex-row gap-2">
           <Link
             href={"/signup"}
             rel="noreferrer"
@@ -68,13 +73,19 @@ export function Posts() {
           >
             Signup
           </Link>
-          <div className="relative w-full">
-            Log in or sign up to view posts
-          </div>
-        </div>
+          <Link
+            href={"/login"}
+            rel="noreferrer"
+            className={buttonVariants({ variant: 'outline' })}
+            style={{ minWidth: "100px" }}
+          >
+            Login
+          </Link>
+        </div></>
       )}
-
-      <BentoGridSecondDemo data={posts} />
+      {isLoggedIn &&  (
+            <BentoGridSecondDemo data={posts} />
+      )}
     </>
   )
 }
