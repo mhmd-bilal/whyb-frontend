@@ -51,7 +51,7 @@ export const postData = async (endpoint, data, token) => {
       "Content-Type": "application/json",
       Authorization: `${token}`,
     },
-    body: JSON.stringify(data),
+    body: data,
   })
   console.log(res)
   if (!res.ok) {
