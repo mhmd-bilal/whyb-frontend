@@ -60,10 +60,9 @@ export const BentoGridItem = ({
       style={{
         borderColor: `${contextColor}40`,
         borderWidth: "0.1em",
-        background:
-          spanColumns === 2
-            ? `radial-gradient(circle, ${contextColor} -300%, transparent 70%)`
-            : `radial-gradient(circle, ${contextColor} -150%, transparent 70%)`,
+        backgroundImage: spanColumns === 2
+          ? `radial-gradient(circle, ${contextColor} -300%, transparent 70%)`
+          : `radial-gradient(circle, ${contextColor} -150%, transparent 70%)`,
         backgroundSize: "100% 200%",
         backgroundPosition: "left bottom",
       }}

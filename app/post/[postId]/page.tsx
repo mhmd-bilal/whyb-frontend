@@ -1,10 +1,9 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
-import Image from "next/image"
+import React from "react"
 import { useParams, useRouter } from "next/navigation"
-import { getPost } from "@/utils/api"
-import { Storage } from "@ionic/storage"
+import { postsApi } from "@/utils/api"
+import { useAuth } from "@/contexts/auth-context"
 import { IconBrandSpotifyFilled } from "@tabler/icons-react"
 import { useQuery } from "react-query"
 
@@ -15,73 +14,83 @@ import { LoadingSpinner } from "@/components/ui/spinner"
 export default function PostDetail() {
   const router = useRouter()
   const { postId } = useParams()
-
-  const storage = new Storage()
-  storage.create()
+  const { token, isLoggedIn, isLoading: authLoading } = useAuth()
 
   const { data, error, isLoading } = useQuery(
     ["post", postId],
-    async () => getPost(postId, await storage.get("authToken")),
+    () => postsApi.getPost(postId as string, token as string),
     {
-      enabled: !!postId,
-      refetchOnWindowFocus: false,
+      enabled: !!token && !!postId,
+      retry: false,
+      onError: (error) => {
+        console.error("Failed to fetch post:", error)
+        if (!isLoggedIn) {
+          router.push("/login")
+        }
+      },
     }
   )
 
-  if (isLoading) return <LoadingSpinner />
+  if (authLoading || isLoading) return (
+    <div className="h-screen w-full flex items-center justify-center">
+      <LoadingSpinner />
+    </div>
+  )
   if (error) return <div>Error loading post details</div>
+  if (!data?.post) return <div>Post not found</div>
 
-  const post = data?.post
+  const { post } = data
+
   return (
     <div
-      className="max-w-4xl mx-auto px-4 py-8"
+      className="mx-auto max-w-4xl px-4 py-8"
       style={{
         background: `radial-gradient(circle at top center, ${post.context_color} -200%, transparent 70%)`,
       }}
     >
-      {post && (
-        <Card className="shadow-none rounded-lg border-none bg-transparent">
-          <CardHeader className="hidden md:flex justify-between items-start "></CardHeader>
+      <Card className="border-none bg-transparent shadow-none rounded-lg">
+        <CardHeader className="hidden md:flex justify-between items-start" />
+        <CardContent className="flex flex-col md:flex-row md:space-x-8">
+          <div className="mb-6 w-full md:mb-0 md:w-1/3">
+            <img
+              src={post.song_image}
+              alt={post.song_name}
+              className="w-full rounded-lg object-cover shadow-md"
+            />
+          </div>
 
-          <CardContent className="flex flex-col md:flex-row space-x-8">
-            <div className="w-full md:w-1/3 mb-4 md:mb-0">
-              <img
-                src={post.song_image}
-                alt={post.song_name}
-                className="w-full rounded-lg object-cover"
-              />
-            </div>
-
-            <div className="w-full md:w-2/3 flex flex-col justify-between text-left">
-              <div className="flex flex-col md:flex-row md:justify-between justify-start items-start mb-4">
-                <div className="mb-4 md:mb-0">
-                  <h2 className="text-xl font-bold">{post.song_name}</h2>
-                  <p className="text-lg font-light">
-                    {post.artist || "Unknown Artist"}
-                  </p>
-                </div>
-                <Button className="bg-green-500 flex items-center space-x-2 ml-auto">
-                  <IconBrandSpotifyFilled />
-                  <span>Listen on Spotify</span>
-                </Button>
+          <div className="flex w-full flex-col space-y-4 md:w-2/3">
+            <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row md:justify-between">
+              <div>
+                <h2 className="text-2xl font-bold mb-1">{post.song_name}</h2>
+                <p className="text-lg">
+                  {post.artist || "Unknown Artist"}
+                </p>
               </div>
-
-              <p className="text-xs text-gray-400 -mt-6">
-                {new Date(post.date).toLocaleDateString()}
-              </p>
-              <p className="text-4xl mb-4">{post.caption}</p>
-
-              <Button
-                variant="outline"
-                onClick={() => router.push("/")}
-                className="w-full mt-4"
+              <Button 
+                className="w-full md:w-auto flex items-center justify-center space-x-2 bg-green-500 hover:bg-green-600"
+                onClick={() => window.open(post.song_url, '_blank')}
               >
-                Back to Posts
+                <IconBrandSpotifyFilled />
+                <span>Listen on Spotify</span>
               </Button>
             </div>
-          </CardContent>
-        </Card>
-      )}
+
+            <p className="text-xs text-gray-400">
+              {new Date(post.date).toLocaleDateString()}
+            </p>
+            <p className="text-2xl md:text-4xl font-medium">{post.caption}</p>
+
+            <Button
+              variant="outline"
+              onClick={() => router.push("/")}
+              className="w-full mt-auto"
+            >
+              Back to Posts
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }

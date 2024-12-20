@@ -2,8 +2,8 @@ import { Metadata } from "next"
 import { Posts } from "@/components/Posts"
 
 export const metadata: Metadata = {
-  title: "Home",
-  description: "Welcome to our platform",
+  title: "whyb.",
+  description: "A new age tune explorer.",
 }
 
 export default function IndexPage() {

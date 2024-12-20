@@ -2,10 +2,11 @@
 
 import React, { useState } from "react"
 import Link from "next/link"
-import { getPosts } from "@/utils/api"
+import { postsApi } from "@/utils/api"
 import { Search } from "lucide-react"
 import { useQuery } from "react-query"
 import { useAuth } from "@/contexts/auth-context"
+import { useDebounce } from "@/hooks/useDebounce"
 
 import { buttonVariants } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -13,23 +14,23 @@ import { BentoGridSecondDemo } from "@/components/BentoGridSecondDemo"
 import { LoadingSpinner } from "./ui/spinner"
 
 export function Posts() {
-  const { token, isLoggedIn, isLoading } = useAuth()
+  const { token, isLoggedIn, isLoading: authLoading } = useAuth()
   const [search, setSearch] = useState<string>("")
+  const debouncedSearch = useDebounce(search, 500)
 
   const {
     data: posts,
     error,
-    isLoading: queryLoading,
+    isLoading: postsLoading,
   } = useQuery(
-    ["posts", search],
-    () => getPosts("/posts/", { search }, token),
+    ["posts", debouncedSearch],
+    () => postsApi.getPosts(debouncedSearch, token as string),
     {
       enabled: !!token,
       refetchOnWindowFocus: false,
     }
   )
 
-  if (isLoading) return <LoadingSpinner />
   if (error) return <div>Error loading data</div>
 
   return (
@@ -61,31 +62,30 @@ export function Posts() {
         </div>
       ) : (
         <>
-        <p className="max-w-[700px] text-lg text-muted-foreground">
-        Log in or sign up to view posts
-        </p>
-        <div className="flex flex-col md:flex-row gap-2">
-          <Link
-            href={"/signup"}
-            rel="noreferrer"
-            className={buttonVariants()}
-            style={{ minWidth: "100px" }}
-          >
-            Signup
-          </Link>
-          <Link
-            href={"/login"}
-            rel="noreferrer"
-            className={buttonVariants({ variant: 'outline' })}
-            style={{ minWidth: "100px" }}
-          >
-            Login
-          </Link>
-        </div></>
+          <p className="max-w-[700px] text-lg text-muted-foreground">
+            Log in or sign up to view posts
+          </p>
+          <div className="flex flex-col md:flex-row gap-2">
+            <Link
+              href={"/signup"}
+              rel="noreferrer"
+              className={buttonVariants()}
+              style={{ minWidth: "100px" }}
+            >
+              Signup
+            </Link>
+            <Link
+              href={"/login"}
+              rel="noreferrer"
+              className={buttonVariants({ variant: "outline" })}
+              style={{ minWidth: "100px" }}
+            >
+              Login
+            </Link>
+          </div>
+        </>
       )}
-      {isLoggedIn &&  (
-            <BentoGridSecondDemo data={posts} />
-      )}
+      {authLoading || postsLoading ? <LoadingSpinner /> : (isLoggedIn && posts && <BentoGridSecondDemo data={posts} />)}
     </>
   )
 }

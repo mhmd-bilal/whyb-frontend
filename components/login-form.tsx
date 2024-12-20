@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { postData } from "@/utils/api"
+import { authApi } from "@/utils/api"
 import { useAuth } from "@/contexts/auth-context"
 
 import { useToast } from "@/hooks/use-toast"
@@ -30,13 +30,8 @@ export function LoginForm({
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault()
 
-    const userData = {
-      email,
-      password,
-    }
-
     try {
-      const response = await postData("/signin/", userData)
+      const response = await authApi.login({ email, password })
       toast({
         description: response.message,
       })
