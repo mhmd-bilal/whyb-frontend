@@ -1,7 +1,7 @@
-const API_URL_DEPLOY_1 = "https://future-molli-bzhal-9b0b6787.koyeb.app"
-const API_URL_DEPLOY_2 = "https://whyb-backend.onrender.com"
-const API_URL_DEV = "http://127.0.0.1:8000"
-const API_URL = "http://127.0.0.1:8000"
+const API_URL_DEPLOY_1 = process.env.NEXT_PUBLIC_API_URL_DEPLOY_1
+const API_URL_DEPLOY_2 = process.env.NEXT_PUBLIC_API_URL_DEPLOY_2
+const API_URL_DEV = process.env.NEXT_PUBLIC_API_URL_DEV
+const API_URL = process.env.NEXT_PUBLIC_API_URL_DEPLOY_1
 
 export const getPosts = async (endpoint, data, token) => {
   const res = await fetch(`${API_URL}${endpoint}?search=${data.search}`, {
