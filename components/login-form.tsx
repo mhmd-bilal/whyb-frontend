@@ -35,7 +35,7 @@ export function LoginForm({
       toast({
         description: response.message,
       })
-      login(`${response.token_type} ${response.access_token}`)
+      login(`${response.token_type} ${response.access_token}`, String(response.user_id));
       router.push("/")
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -74,6 +74,7 @@ export function LoginForm({
                 <Input
                   id="password"
                   type="password"
+                  placeholder="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required

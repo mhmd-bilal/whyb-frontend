@@ -20,6 +20,7 @@ export function SiteHeader() {
 
   const handleLogout = () => {
     logout()
+    router.push("/")
     toast({
       description: "You have been logged out.",
     })

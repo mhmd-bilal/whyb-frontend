@@ -6,6 +6,7 @@ import { fontSans } from "@/lib/fonts"
 import { cn } from "@/lib/utils"
 import { Toaster } from "@/components/ui/toaster"
 import { SiteHeader } from "@/components/site-header"
+import { Footer } from "@/components/footer"
 import { TailwindIndicator } from "@/components/tailwind-indicator"
 import { Providers } from "@/components/providers"
 
@@ -35,7 +36,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <Providers>
           <div className="relative flex min-h-screen flex-col">
             <SiteHeader />
-            <div className="flex-1">{children}</div>
+            <main className="flex-1">{children}</main>
+            <Footer />
           </div>
           <Toaster />
           <TailwindIndicator />

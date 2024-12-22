@@ -47,16 +47,17 @@ export function Posts() {
           </Link>
 
           <div className="relative w-full">
-            <Input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="xs:text-xs"
-              placeholder="Search for posts, tags, users, or anything..."
-              style={{
-                width: "100%",
-                paddingLeft: "40px",
-              }}
-            />
+          <Input
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+  className="xs:text-xs rounded-full border-b-0 border-solid border-primary  focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+  placeholder="Search for posts, tags, users, or anything..."
+  style={{
+    width: "100%",
+    paddingLeft: "45px",
+  }}
+/>
+
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400" />
           </div>
         </div>
@@ -85,7 +86,7 @@ export function Posts() {
           </div>
         </>
       )}
-      {authLoading || postsLoading ? <LoadingSpinner /> : (isLoggedIn && posts && <BentoGridSecondDemo data={posts} />)}
+      {authLoading || postsLoading ? <div className="flex-1"><LoadingSpinner /></div> : (isLoggedIn && posts && <BentoGridSecondDemo data={posts.posts} />)}
     </>
   )
 }

@@ -28,6 +28,7 @@ export const BentoGridItem = ({
   title,
   description,
   header,
+  userId,
   icon,
   contextColor,
   spanColumns = 1,
@@ -40,6 +41,7 @@ export const BentoGridItem = ({
   header?: React.ReactNode
   icon?: React.ReactNode
   spanColumns?: number
+  userId? : string
 }) => {
   const router = useRouter()
   const limitedTitle = (title: ReactNode): string => {
@@ -48,10 +50,14 @@ export const BentoGridItem = ({
     }
     return ""
   }
+  
+  const handleNavigation = () => {
+    router.push(`/profile/${userId}`);
+  };
   return (
     <div
       className={cn(
-        "w-full rounded-xl group/bento hover:shadow-xl shadow-input dark:shadow-none dark:bg-card bg-white justify-between flex flex-col space-y-4 hover:scale-110 border z-0 hover:z-10 transition duration-500",
+        "w-full cursor-pointer rounded-xl group/bento hover:shadow-xl shadow-input dark:shadow-none dark:bg-card bg-white justify-between flex flex-col space-y-4 hover:scale-110 border z-0 hover:z-10 transition duration-500",
         className,
         spanColumns === 2
           ? "md:col-span-2 relative group-hover:z-20"
@@ -91,10 +97,12 @@ export const BentoGridItem = ({
                 {title}
               </div>
 
-              <div className="font-sans font-normal text-neutral-400 text-xs">
-                {description}
-              </div>
-            </div>
+              <div
+      className="font-sans font-normal text-neutral-400 text-xs cursor-pointer z-100"
+      onClick={handleNavigation}
+    >
+      {description}
+    </div>            </div>
           </>
         )}
       </div>

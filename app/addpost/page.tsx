@@ -106,7 +106,6 @@ const AddPostPage: FC = () => {
             onChange={handleContentChange}
             disabled={loading === true} 
             rows={6}
-            className="w-full border p-2 rounded-md"
           />
         </div>
 

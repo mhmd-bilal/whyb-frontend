@@ -1,36 +1,17 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL_DEPLOY_1
+import {
+  ApiError,
+  AuthResponse,
+  Post,
+  PostResponse,
+  PostsResponse,
+  Comment,
+  CommentInput,
+  UserData,
+  User
+} from "@/types"
 
-interface ApiError {
-  message: string
-  status?: number
-}
+const API_URL = process.env.NEXT_PUBLIC_API_URL_DEV
 
-interface AuthResponse {
-  message: string
-  token_type: string
-  access_token: string
-}
-
-interface Post {
-  id: string
-  song_name: string
-  artist: string
-  song_image: string
-  caption: string
-  date: string
-  context_color: string
-  song_url: string
-}
-
-interface PostsResponse {
-  posts: Post[]
-}
-
-interface PostResponse {
-  post: Post
-}
-
-// Helper function for API calls
 async function fetchApi<T>(
   endpoint: string,
   options: RequestInit = {}
@@ -109,23 +90,32 @@ export const postsApi = {
         Authorization: token,
       },
     }),
+
+    postComment: (data: Partial<Comment>,postId:string , token: string) =>
+      fetchApi<PostResponse>(`/posts/${postId}/comment`, {
+        method: "POST",
+        headers: {
+          Authorization: token,
+        },
+        body: JSON.stringify(data),
+      }),
 }
 
-// User APIs
 export const userApi = {
-  getProfile: (token: string) =>
-    fetchApi<{ user: any }>("/profile/", {
+  getUser: (userId: string, token: string) =>
+    fetchApi<UserData>(`/user/${userId}`, {
       headers: {
         Authorization: token,
       },
-    }),
+    }),  
 
-  updateProfile: (data: any, token: string) =>
-    fetchApi<{ user: any }>("/profile/", {
+  updateUser: (userId: string, data: { name?: string; email?: string; bio?: string }, token: string) =>
+    fetchApi<{ user: { name: string; email: string; bio: string } }>(`/user/${userId}`, {
       method: "PUT",
       headers: {
         Authorization: token,
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     }),
-} 
+};

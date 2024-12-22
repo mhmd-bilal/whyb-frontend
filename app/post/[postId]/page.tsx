@@ -6,17 +6,20 @@ import { postsApi } from "@/utils/api"
 import { useAuth } from "@/contexts/auth-context"
 import { IconBrandSpotifyFilled } from "@tabler/icons-react"
 import { useQuery } from "react-query"
-
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { LoadingSpinner } from "@/components/ui/spinner"
+import { Textarea } from "@/components/ui/textarea"
+import { useToast } from "@/hooks/use-toast"
 
 export default function PostDetail() {
   const router = useRouter()
   const { postId } = useParams()
   const { token, isLoggedIn, isLoading: authLoading } = useAuth()
+  const { toast } = useToast()
 
-  const { data, error, isLoading } = useQuery(
+  const { data, error, isLoading, refetch } = useQuery(
     ["post", postId],
     () => postsApi.getPost(postId as string, token as string),
     {
@@ -31,6 +34,38 @@ export default function PostDetail() {
     }
   )
 
+  const handleAddComment = async (e: React.FormEvent) => {
+    e.preventDefault()
+    const comment = {
+      comment : newComment
+    }
+
+    try {
+      const response = await postsApi.postComment( comment ,postId as string, token as string)
+      setNewComment("")
+      refetch()
+      toast({
+        description: "Comment posted successfully!",
+      })
+      
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        toast({
+          variant: "destructive",
+          description: error.message,
+        })
+        console.error(error.message)
+      }
+    }
+  }
+  
+  const handleNavigation = (user_id : string) => {
+    router.push(`/profile/${user_id}`);
+  };
+
+
+  const [newComment, setNewComment] = useState("")
+
   if (authLoading || isLoading) return (
     <div className="h-screen w-full flex items-center justify-center">
       <LoadingSpinner />
@@ -39,9 +74,12 @@ export default function PostDetail() {
   if (error) return <div>Error loading post details</div>
   if (!data?.post) return <div>Post not found</div>
 
-  const { post } = data
+  const { post, comments } = data
 
   return (
+    <div
+      className="mx-auto max-w-4xl "
+    >
     <div
       className="mx-auto max-w-4xl px-4 py-8"
       style={{
@@ -68,7 +106,7 @@ export default function PostDetail() {
                 </p>
               </div>
               <Button 
-                className="w-full md:w-auto flex items-center justify-center space-x-2 bg-green-500 hover:bg-green-600"
+                className="w-full md:w-auto flex items-center justify-center space-x-2 bg-green-500 hover:bg-green-600 min-w-max"
                 onClick={() => window.open(post.song_url, '_blank')}
               >
                 <IconBrandSpotifyFilled />
@@ -78,6 +116,13 @@ export default function PostDetail() {
 
             <p className="text-xs text-gray-400">
               {new Date(post.date).toLocaleDateString()}
+            </p>
+            <p 
+              className="text-xs text-gray-400 cursor-pointer" 
+              onClick={() => handleNavigation(post.user_id)}
+              style={{marginTop:"2px"}}
+            >
+              Post by <span className="underline">{post.name}</span>
             </p>
             <p className="text-2xl md:text-4xl font-medium">{post.caption}</p>
 
@@ -91,6 +136,33 @@ export default function PostDetail() {
           </div>
         </CardContent>
       </Card>
+      
+    </div>
+    
+    <Card className="mt-2 p-4 rounded-lg border-0">
+  <h3 className="text-lg font-bold mb-4">Comments</h3>
+   <div className="space-y-4">
+    {comments.map((comment,index) => (
+      <Card key={index} className="p-4 border rounded-lg ">
+        <p className="font-medium">{comment.username}</p>
+        <p className="text-sm text-gray-600">{comment.comment}</p>
+      </Card>
+    ))}
+  </div>
+
+  <div className="mt-4 flex flex-col space-y-4">
+    <Textarea
+      placeholder="Add a comment..."
+      className="xs:text-xs rounded-lg border-b-0 border-solid p-4 border focus:outline-none focus:none"
+      value={newComment}
+      onChange={(e) => setNewComment(e.target.value)}
+    />
+    <Button onClick={handleAddComment} className="self-end">
+      Submit
+    </Button>
+  </div>
+</Card>
+
     </div>
   )
 }

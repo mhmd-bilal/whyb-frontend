@@ -1,29 +1,29 @@
 "use client"
 
-import { createContext, useContext, useState, ReactNode, useEffect } from "react"
-
-interface AuthContextType {
-  token: string | null
-  isLoggedIn: boolean
-  login: (token: string) => void
-  logout: () => void
-  isLoading: boolean
-}
+import { createContext, useContext, useEffect, useState } from "react"
+import { userApi } from "@/utils/api"
+import { User, AuthContextType } from "@/types"
+import { ReactNode } from "react"
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState<string | null>(null)
+  const [userId, setUserId] = useState<string | null>(null)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     try {
       const storedToken = window.localStorage.getItem("authToken")
+      const storedUserId = window.localStorage.getItem("userId")
       const storedLoginStatus = window.localStorage.getItem("isLoggedIn") === "true"
       
       if (storedToken) {
         setToken(storedToken)
+      }
+      if (storedUserId) {
+        setUserId(storedUserId)
       }
       setIsLoggedIn(storedLoginStatus)
     } catch (error) {
@@ -33,11 +33,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [])
 
-  const login = (newToken: string) => {
+  const login = (newToken: string,newUserId: string) => {
     try {
       setToken(newToken)
+      setUserId(newUserId)
       setIsLoggedIn(true)
       window.localStorage.setItem("authToken", newToken)
+      window.localStorage.setItem("userId", newUserId)
       window.localStorage.setItem("isLoggedIn", "true")
     } catch (error) {
       console.error("Error saving to localStorage:", error)
@@ -47,8 +49,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = () => {
     try {
       setToken(null)
+      setUserId(null)
       setIsLoggedIn(false)
       window.localStorage.removeItem("authToken")
+      window.localStorage.removeItem("userId")
       window.localStorage.setItem("isLoggedIn", "false")
     } catch (error) {
       console.error("Error removing from localStorage:", error)
@@ -56,7 +60,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ token, isLoggedIn, login, logout, isLoading }}>
+    <AuthContext.Provider value={{ token, isLoggedIn, login, logout, isLoading, userId }}>
       {children}
     </AuthContext.Provider>
   )
