@@ -53,6 +53,7 @@ export interface Post {
 export interface PostResponse {
   post: Post
   comments: Comment[]
+  likes_count: number
 }
 
 export interface PostsResponse {

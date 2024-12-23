@@ -18,13 +18,15 @@ type Item = {
   caption: string
   user_id: string
   name: string
+  likes: number
+  date: Date
   spanColumns: number
   context_color: string
 }
 
 export function BentoGridSecondDemo({ data }: any) {
   const [itemsWithSpan, setItemsWithSpan] = useState<Item[]>([])
-
+  console.log(data)
   useEffect(() => {
     if (data) {
       const shuffledItems = data.map((post: any) => ({
@@ -39,6 +41,8 @@ export function BentoGridSecondDemo({ data }: any) {
         context_color: post.context_color,
         name: post.name,
         user_id: post.user_id,
+        likes: post.likes_count,
+        date: post.date,
         spanColumns: getRandomSpan(),
       }))
       const itemsWithValidRows = adjustSpanColumnsToFitRow(shuffledItems)
@@ -72,6 +76,8 @@ export function BentoGridSecondDemo({ data }: any) {
           title={item.song_name}
           description={item.name}
           userId={item.user_id}
+          likes= {item.likes}
+        date={item.date}
           header={
             <img
               src={item.song_image}

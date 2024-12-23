@@ -91,14 +91,22 @@ export const postsApi = {
       },
     }),
 
-    postComment: (data: Partial<Comment>,postId:string , token: string) =>
-      fetchApi<PostResponse>(`/posts/${postId}/comment`, {
-        method: "POST",
-        headers: {
-          Authorization: token,
-        },
-        body: JSON.stringify(data),
-      }),
+  postComment: (data: Partial<Comment>,postId:string , token: string) =>
+    fetchApi<PostResponse>(`/posts/${postId}/comment`, {
+      method: "POST",
+      headers: {
+        Authorization: token,
+      },
+      body: JSON.stringify(data),
+    }),
+
+  postLike: (postId:string , token: string) =>
+    fetchApi<PostResponse>(`/posts/${postId}/like`, {
+      method: "POST",
+      headers: {
+        Authorization: token,
+      },
+    }),
 }
 
 export const userApi = {

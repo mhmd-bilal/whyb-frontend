@@ -66,7 +66,10 @@ const MyProfile: React.FC = () => {
   }, [data]);
   
 
-  if (isLoading) return <LoadingSpinner />;
+  if (isLoading) return 
+   <div className="h-screen w-full flex items-center justify-center">
+        <LoadingSpinner />
+      </div>;
   if (error) return <div>Error loading profile</div>;
   if (!data?.user) return <div>User not found</div>;
 

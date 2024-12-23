@@ -2,6 +2,9 @@ import { ReactNode } from "react"
 import { useRouter } from "next/navigation"
 
 import { cn } from "@/lib/utils"
+import { Badge } from "./badge"
+import { Heart } from "lucide-react"
+import { IconHeartFilled } from "@tabler/icons-react"
 
 export const BentoGrid = ({
   className,
@@ -31,6 +34,8 @@ export const BentoGridItem = ({
   userId,
   icon,
   contextColor,
+  likes,
+  date,
   spanColumns = 1,
 }: {
   postId?: string
@@ -42,6 +47,8 @@ export const BentoGridItem = ({
   icon?: React.ReactNode
   spanColumns?: number
   userId? : string
+  likes: number
+  date: Date
 }) => {
   const router = useRouter()
   const limitedTitle = (title: ReactNode): string => {

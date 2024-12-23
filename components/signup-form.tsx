@@ -23,6 +23,7 @@ export function SignupForm({
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
   const [name, setName] = useState("")
+  const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [bio, setBio] = useState("")
@@ -34,7 +35,8 @@ export function SignupForm({
     e.preventDefault()
 
     const userData = {
-      username: name,
+      name: name,
+      username:username,
       email,
       password,
       bio,
@@ -77,6 +79,17 @@ export function SignupForm({
                   placeholder="Phil Dunphy"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="name">Username</Label>
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="thePhil"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   required
                 />
               </div>

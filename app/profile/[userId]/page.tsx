@@ -27,9 +27,15 @@ const Profile: React.FC = () => {
     }
   )
 
-  if (isLoading) return <LoadingSpinner />
-  if (error) return <div>Error loading profile</div>
-  if (!data?.user) return <div>User not found</div>
+  if (isLoading) return   <div className="h-screen w-full flex items-center justify-center">
+          <LoadingSpinner />
+        </div>
+  if (error) return <div className="h-screen w-full flex items-center justify-center">
+Error loading profile
+</div>
+  if (!data?.user) return <div className="h-screen w-full flex items-center justify-center">
+  User not found
+  </div>
 
   const handlePost = (id : string) => {
     router.push(`/post/${id}`)
