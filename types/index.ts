@@ -54,6 +54,7 @@ export interface PostResponse {
   post: Post
   comments: Comment[]
   likes_count: number
+  liked: boolean
 }
 
 export interface PostsResponse {

@@ -108,7 +108,7 @@ export const BentoGridItem = ({
       className="font-sans font-normal text-neutral-400 text-xs cursor-pointer z-100"
       onClick={handleNavigation}
     >
-      {description}
+      @{description}
     </div>            </div>
           </>
         )}
@@ -119,7 +119,7 @@ export const BentoGridItem = ({
             {limitedTitle(title)}
           </div>
           <div className="font-sans font-normal text-neutral-600 text-xs dark:text-neutral-300">
-            {description}
+          @{description}
           </div>
         </div>
       )}

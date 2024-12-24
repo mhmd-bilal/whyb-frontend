@@ -10,7 +10,7 @@ import {
   User
 } from "@/types"
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL_DEPLOY_1
+const API_URL = process.env.NODE_ENV === "production" ? process.env.NEXT_PUBLIC_API_URL_DEPLOY_1 : process.env.NEXT_PUBLIC_API_URL_DEV
 
 async function fetchApi<T>(
   endpoint: string,

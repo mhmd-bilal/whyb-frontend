@@ -16,7 +16,7 @@ import { Badge } from "@/components/ui/badge"
 import { IconHeartFilled } from "@tabler/icons-react"
 import { formatDistanceToNow, isAfter, subHours } from "date-fns";
 import { ConfettiEmoji } from "@/components/ConfettiEmoji"
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, ChevronLeft } from "lucide-react"
 
 export default function PostDetail() {
   const router = useRouter()
@@ -95,7 +95,7 @@ export default function PostDetail() {
   if (error) return <div>Error loading post details</div>
   if (!data?.post) return <div>Post not found</div>
 
-  const { post, comments, likes_count } = data
+  const { post, comments, likes_count, liked } = data
 
   const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
@@ -126,7 +126,19 @@ export default function PostDetail() {
     >
       <Card className="border-none bg-transparent shadow-none rounded-lg">
         <CardHeader className="hidden md:flex justify-between items-start" />
-        <CardContent className="flex flex-col md:flex-row md:space-x-8">
+        <CardContent >
+          {/* <div className="w-full">
+        <Button
+              variant="ghost"
+              onClick={() => router.push("/")}
+              className="w-fit p-0 hover:bg-transparent"
+            >
+          <div className="flex items-center justify-center gap-1 text-xs" >
+              <ChevronLeft size={13} />Back to Posts
+          </div>
+            </Button>
+            </div> */}
+            <div className="flex flex-col md:flex-row md:space-x-8">
           <div className="mb-6 w-full md:mb-0 md:w-1/3">
             <img
               src={post.song_image}
@@ -134,17 +146,7 @@ export default function PostDetail() {
               className="w-full rounded-lg object-cover shadow-md"
             />
           </div>
-
           <div className="flex w-full flex-col space-y-2 md:w-2/3">
-          <div className="flex">
-          <Button
-              variant="outline"
-              onClick={() => router.push("/")}
-              className="w-full"
-            >
-              <ArrowLeft />Back to Posts
-            </Button>
-          </div>
           <div className="flex flex-col space-y-4 md:space-y-4 md:flex-row md:justify-between">
             <div >
               <h2 className="text-2xl ">{post.song_name}</h2>
@@ -168,8 +170,12 @@ export default function PostDetail() {
               </Button>
 
               <Badge
-                // style={{backgroundColor: post.context_color}}
-                className="relative flex font-light flex-row w-fit gap-0.5 min-w-fit px-2 py-0.5 text-xs z-10 cursor-pointer hover:scale-125 transition duration-500"
+                style={{
+                    backgroundColor: liked ? post.context_color : "transparent",
+                    border: liked ? "none" : `1px solid ${post.context_color}`,
+                    color: liked ? "none" : `1px solid ${post.context_color}`,
+                  }}
+                  className="relative flex font-light flex-row w-fit gap-0.5 min-w-fit px-2 py-0.5 text-xs z-10 cursor-pointer hover:scale-125 transition duration-500"
                 onClick={handleLike}
               >
                 <ConfettiEmoji count={likes_count.toString()} onClick={handleLike} />
@@ -179,6 +185,7 @@ export default function PostDetail() {
 
           <div>
             <p className="text-2xl mt-4 md:text-4xl font-medium ">{post.caption}</p>
+          </div>
           </div>
           </div>
         </CardContent>

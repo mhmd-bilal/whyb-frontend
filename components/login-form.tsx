@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Eye, EyeOff } from "lucide-react"
 
 export function LoginForm({
   className,
@@ -26,6 +27,7 @@ export function LoginForm({
   const { login } = useAuth()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [isView, setIsView] = useState(false);
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault()
@@ -59,7 +61,7 @@ export function LoginForm({
           <form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" required>Email</Label>
                 <Input
                   id="email"
                   type="email"
@@ -70,15 +72,32 @@ export function LoginForm({
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
+                <Label htmlFor="password" required>
+                  Password
+                </Label>
+                <div className="relative">
+                  <Input
+                    type={isView ? "text" : "password"}
+                    id="password"
+                    placeholder="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                  {isView ? (
+                    <Eye
+                      size={20}
+                      className="absolute right-2 top-2 z-10 cursor-pointer text-sm text-[#696562]"
+                      onClick={() => setIsView(!isView)}
+                    />
+                  ) : (
+                    <EyeOff
+                      size={20}
+                      className="absolute right-2 top-2 z-10 cursor-pointer text-sm text-[#696562]"
+                      onClick={() => setIsView(!isView)}
+                    />
+                  )}
+                </div>
               </div>
               <Button type="submit" className="w-full">
                 Log In

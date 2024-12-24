@@ -39,7 +39,7 @@ export function BentoGridSecondDemo({ data }: any) {
         artist: post.artist,
         caption: post.caption,
         context_color: post.context_color,
-        name: post.name,
+        name: post.username,
         user_id: post.user_id,
         likes: post.likes_count,
         date: post.date,

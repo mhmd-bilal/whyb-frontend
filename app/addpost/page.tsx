@@ -97,7 +97,7 @@ const AddPostPage: FC = () => {
 
         <div className="w-full">
           <label htmlFor="content" className="block text-sm font-medium mb-2">
-            Post Content:
+            Post Content
           </label>
           <Textarea
             id="content"
