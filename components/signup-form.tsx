@@ -102,6 +102,7 @@ export function SignupForm({
                   Name
                 </Label>
                 <Input
+                  autoFocus
                   id="name"
                   type="text"
                   placeholder="Phil Dunphy"

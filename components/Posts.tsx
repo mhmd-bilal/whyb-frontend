@@ -31,7 +31,7 @@ const sortOptions = [
 export function Posts() {
   const { token, isLoggedIn, isLoading: authLoading } = useAuth();
   const [search, setSearch] = useState<string>("");
-  const [sortBy, setSortBy] = useState<string>("date"); 
+  const [sortBy, setSortBy] = useState<string>("date");
   const debouncedSearch = useDebounce(search, 500);
   const pathname = usePathname();
 
@@ -79,6 +79,7 @@ export function Posts() {
 
           <div className="relative flex-1 w-full">
             <Input
+              autoFocus = {pathname === "/search"}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="xs:text-xs rounded-full border-solid border"

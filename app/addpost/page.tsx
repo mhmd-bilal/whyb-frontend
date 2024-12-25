@@ -88,16 +88,17 @@ const AddPostPage: FC = () => {
                 <Youtube size={24} className="text-red-500" />
               )}
               <Input
+                autoFocus
                 id="link"
                 placeholder="Paste your song URL"
                 value={link}
-                disabled={loading === true} 
+                disabled={loading === true}
                 onChange={handleLinkChange}
                 className="w-full"
               />
             </div>
           </div>
-  
+
           <div className="w-full">
             <label htmlFor="content" className="block text-sm font-medium mb-2">
               Post Content
@@ -107,11 +108,11 @@ const AddPostPage: FC = () => {
               placeholder="Write about the song..."
               value={postContent}
               onChange={handleContentChange}
-              disabled={loading === true} 
+              disabled={loading === true}
               rows={6}
             />
           </div>
-  
+
           <Button
             onClick={handleSubmit}
             className="w-full"
@@ -145,7 +146,7 @@ const AddPostPage: FC = () => {
           </div>
         </>
       )}
-      
+
     </div>
   )
 }

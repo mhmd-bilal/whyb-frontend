@@ -18,10 +18,7 @@ const Profile: React.FC = () => {
 
   const { data, error, isLoading } = useQuery<UserData>(
     ["user", userId],
-    async () => {
-      const userResponse = await userApi.getUser(userId as string, token!)
-      return userResponse
-    },
+    () => userApi.getUser(userId as string, token!),
     {
       enabled: !!token && !!userId,
       retry: false,
@@ -47,10 +44,9 @@ const Profile: React.FC = () => {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
-      {/* User Profile Card */}
       <Card className="border shadow-md rounded-lg">
         <CardHeader>
-          <h2 className="text-4xl font-bold pb-0">@{user.username}&apos;s Profile</h2>
+          <h2 className="text-4xl font-bold pb-0">@{user.username}&apos;s profile</h2>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex flex-col md:flex-row gap-6">
@@ -100,14 +96,14 @@ const Profile: React.FC = () => {
 
       <Card className="border shadow-md rounded-lg mt-6">
         <CardContent className="pt-6">
-          <h2 className="text-2xl font-bold mb-4">@{user.username}&apos;s Posts</h2>
+          <h2 className="text-2xl font-bold mb-4">@{user.username}&apos;s posts</h2>
           <BentoGridSecondDemo data={posts} />
         </CardContent>
       </Card>
       <div className="space-y-4">
         <Card className="border shadow-md rounded-lg mt-6">
           <CardContent className="pt-6">
-            <h2 className="text-2xl font-bold mb-4">@{user.username}&apos;s Comments</h2>
+            <h2 className="text-2xl font-bold mb-4">@{user.username}&apos;s comments</h2>
             <div className="flex flex-col gap-4">
               {comments.map((comment, index) => (
                 <Card key={index} className="flex flex-row items-center gap-6 p-4 border rounded-lg cursor-pointer" onClick={() => handlePost(comment.post_id || '')}>

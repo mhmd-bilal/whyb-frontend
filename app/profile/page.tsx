@@ -78,9 +78,18 @@ const MyProfile: React.FC = () => {
     );
   }
 
-  if (error) return <div>Error loading profile</div>;
-  if (!data?.user) return <div>User not found</div>;
-
+  if (error) return <div className="h-screen w-full flex items-center justify-center">
+    Error loading profile
+  </div>
+  
+  if (!data?.user) {
+    return (
+      <div className="h-screen w-full flex items-center justify-center">
+        User not found
+      </div>
+    )
+  }
+  
   const { user, posts, stats } = data;
 
   const handleSave = () => {
@@ -91,7 +100,7 @@ const MyProfile: React.FC = () => {
     <div className="mx-auto max-w-6xl px-4 py-8">
       <Card className="border shadow-md rounded-lg">
         <CardHeader className="flex justify-between">
-          <h2 className="text-4xl font-bold pb-0">@{user.username}&apos;s Profile</h2>
+          <h2 className="text-4xl font-bold pb-0">@{user.username}&apos;s profile</h2>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex flex-col md:flex-row gap-6 ">
@@ -167,7 +176,7 @@ const MyProfile: React.FC = () => {
 
       <Card className="border shadow-md rounded-lg mt-6 py-6">
         <CardContent>
-          <h2 className="text-2xl font-bold pb-4">@{user.username}&apos;s Posts</h2>
+          <h2 className="text-2xl font-bold pb-4">@{user.username}&apos;s posts</h2>
           <BentoGridSecondDemo data={posts} />
         </CardContent>
       </Card>

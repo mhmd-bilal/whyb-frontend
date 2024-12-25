@@ -63,6 +63,7 @@ export function LoginForm({
               <div className="grid gap-2">
                 <Label htmlFor="email" required>Email</Label>
                 <Input
+                  autoFocus
                   id="email"
                   type="email"
                   placeholder="phildunphy@yeehaw.com"

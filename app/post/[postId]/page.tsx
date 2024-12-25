@@ -98,8 +98,12 @@ export default function PostDetail() {
       <LoadingSpinner />
     </div>
   )
-  if (error) return <div>Error loading post details</div>
-  if (!data?.post) return <div>Post not found</div>
+  if (error) return <div className="h-screen w-full flex items-center justify-center">
+    Error loading post
+  </div>
+  if (!data?.post) return <div className="h-screen w-full flex items-center justify-center">
+    Post not found
+  </div>
 
   const { post, comments, likes_count, liked } = data
 
