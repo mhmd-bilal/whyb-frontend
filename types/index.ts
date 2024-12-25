@@ -1,4 +1,3 @@
-// Auth related types
 export interface AuthResponse {
   user_id: string
   message: string
@@ -6,7 +5,6 @@ export interface AuthResponse {
   access_token: string
 }
 
-// User related types
 export interface User {
   id?: string
   username?: string
@@ -32,7 +30,6 @@ export interface UserData {
   comments: Comment[]
 }
 
-// Post related types
 export interface Post {
   id: string
   song_name: string
@@ -47,7 +44,7 @@ export interface Post {
   date: string
   context_color: string
   name: string
-  user_name: string
+  username: string
 }
 
 export interface PostResponse {
@@ -61,7 +58,6 @@ export interface PostsResponse {
   posts: Post[]
 }
 
-// Comment related types
 export interface Comment {
   id?: string
   comment: string
@@ -71,6 +67,7 @@ export interface Comment {
   username?: string
   created_at?: string
   song_image: string
+  date: string
 }
 
 export interface CommentInput {

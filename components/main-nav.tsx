@@ -8,9 +8,10 @@ import { Icons } from "@/components/icons"
 
 interface MainNavProps {
   items?: NavItem[]
+  pathname?: string
 }
 
-export function MainNav({ items }: MainNavProps) {
+export function MainNav({ items, pathname }: MainNavProps) {
   return (
     <>
       <div className="gap-6 md:gap-10 md:flex-row hidden sm:flex">
@@ -20,21 +21,22 @@ export function MainNav({ items }: MainNavProps) {
         </Link>
         {items?.length ? (
           <nav className="flex gap-6">
-            {items?.map(
-              (item, index) =>
-                item.href && (
-                  <Link
-                    key={index}
-                    href={item.href}
-                    className={cn(
-                      "flex items-center text-sm font-medium text-muted-foreground",
-                      item.disabled && "cursor-not-allowed opacity-80"
-                    )}
-                  >
-                    {item.title}
-                  </Link>
-                )
-            )}
+            {items?.map((item, index) => {
+              return item.href ? (
+                <Link
+                  key={ index} 
+                  href={item.href}
+                  className={cn(
+                    "flex items-center text-sm font-medium",
+                    item.disabled && "cursor-not-allowed opacity-80",
+                    pathname === item.href ? "": "text-muted-foreground"
+                  )}
+                >
+                  {item.title}
+                </Link>
+              ) : null
+            } )}
+
           </nav>
         ) : null}
       </div>

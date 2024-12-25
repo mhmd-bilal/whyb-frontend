@@ -66,7 +66,7 @@ export const postsApi = {
     }),
 
   createPost: (data: Partial<Post>, token: string) =>
-    fetchApi<PostResponse>("/posts/", {
+    fetchApi<PostResponse>("/post/", {
       method: "POST",
       headers: {
         Authorization: token,

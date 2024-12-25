@@ -9,6 +9,7 @@ import { LoadingSpinner } from "@/components/ui/spinner"
 import { BentoGridSecondDemo } from "@/components/BentoGridSecondDemo"
 import { UserData } from "@/types"
 import { useParams, useRouter } from "next/navigation"
+import { formatDate } from "@/lib/utils"
 
 const Profile: React.FC = () => {
   const { token } = useAuth()
@@ -27,17 +28,17 @@ const Profile: React.FC = () => {
     }
   )
 
-  if (isLoading) return   <div className="h-screen w-full flex items-center justify-center">
-          <LoadingSpinner />
-        </div>
+  if (isLoading) return <div className="h-screen w-full flex items-center justify-center">
+    <LoadingSpinner />
+  </div>
   if (error) return <div className="h-screen w-full flex items-center justify-center">
-Error loading profile
-</div>
+    Error loading profile
+  </div>
   if (!data?.user) return <div className="h-screen w-full flex items-center justify-center">
-  User not found
+    User not found
   </div>
 
-  const handlePost = (id : string) => {
+  const handlePost = (id: string) => {
     router.push(`/post/${id}`)
   }
 
@@ -49,12 +50,16 @@ Error loading profile
       {/* User Profile Card */}
       <Card className="border shadow-md rounded-lg">
         <CardHeader>
-          <h2 className="text-2xl font-bold">{user.name}&apos;s Profile</h2>
+          <h2 className="text-4xl font-bold pb-0">@{user.username}&apos;s Profile</h2>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex flex-col md:flex-row gap-6">
-            {/* Left Column - Profile Info */}
             <div className="flex flex-col gap-4">
+              <div>
+                <h3 className="font-semibold text-sm text-muted-foreground">Username</h3>
+                <p className="text-lg">{`@${user.username || "Not provided"}`}</p>
+              </div>
+
               <div>
                 <h3 className="font-semibold text-sm text-muted-foreground">Name</h3>
                 <p className="text-lg">{user.name || "Not provided"}</p>
@@ -65,13 +70,8 @@ Error loading profile
                 <p className="text-lg">{user.email || "Not provided"}</p>
               </div>
 
-              <div>
-                <h3 className="font-semibold text-sm text-muted-foreground">Bio</h3>
-                <p className="text-lg">{user.bio || "No bio provided"}</p>
-              </div>
             </div>
 
-            {/* Right Column - Profile Stats */}
             <div className="flex-1">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 <div>
@@ -83,40 +83,46 @@ Error loading profile
                   <h4 className="text-muted-foreground">Comments</h4>
                 </div>
                 <div>
-                  <p className="text-4xl font-bold">{stats.followers_count}</p>
-                  <h4 className="text-muted-foreground">Followers</h4>
+                  <p className="text-4xl font-bold">{stats.likes_count}</p>
+                  <h4 className="text-muted-foreground">Likes</h4>
                 </div>
-                <div>
-                  <p className="text-4xl font-bold">{stats.following_count}</p>
-                  <h4 className="text-muted-foreground">Following</h4>
-                </div>
+              </div>
+            </div>
+            <div className="flex-1">
+              <div>
+                <h3 className="font-semibold text-sm text-muted-foreground">Bio</h3>
+                <p className="text-lg">{user.bio || "No bio provided"}</p>
               </div>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* User Posts */}
       <Card className="border shadow-md rounded-lg mt-6">
         <CardContent className="pt-6">
-          <h2 className="text-2xl font-bold mb-4">{user.name}&apos;s Posts</h2>
+          <h2 className="text-2xl font-bold mb-4">@{user.username}&apos;s Posts</h2>
           <BentoGridSecondDemo data={posts} />
         </CardContent>
       </Card>
       <div className="space-y-4">
-      <Card className="border shadow-md rounded-lg mt-6">
-        <CardContent className="pt-6">
-          <h2 className="text-2xl font-bold mb-4">{user.name}&apos;s Comments</h2>
-          <div className="flex flex-col gap-4">
-          {comments.map((comment, index) => (
-      <Card key={index} className="flex flex-row items-center gap-6 p-4 border rounded-lg cursor-pointer" onClick={() => handlePost(comment.post_id || '')}>
-        <img src={comment.song_image} alt="Song" className="w-16 h-16 rounded object-cover" />
-        <p className="text-lg">{comment.comment}</p>
-      </Card>
-    ))}      </div>  </CardContent>
-      </Card>
-   
-  </div>
+        <Card className="border shadow-md rounded-lg mt-6">
+          <CardContent className="pt-6">
+            <h2 className="text-2xl font-bold mb-4">@{user.username}&apos;s Comments</h2>
+            <div className="flex flex-col gap-4">
+              {comments.map((comment, index) => (
+                <Card key={index} className="flex flex-row items-center gap-6 p-4 border rounded-lg cursor-pointer" onClick={() => handlePost(comment.post_id || '')}>
+                  <img src={comment.song_image} alt="Song" className="w-16 h-16 rounded object-cover" />
+                  <div className="flex flex-1 flex-col">
+                    <p className="text-lg">{comment.comment}</p>
+                  </div>
+                  <p className="text-sm text-muted-foreground ml-auto">{formatDate(comment.date)}</p>
+                </Card>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+      </div>
 
     </div>
   )

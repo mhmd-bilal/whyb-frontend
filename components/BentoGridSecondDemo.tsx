@@ -26,7 +26,6 @@ type Item = {
 
 export function BentoGridSecondDemo({ data }: any) {
   const [itemsWithSpan, setItemsWithSpan] = useState<Item[]>([])
-  console.log(data)
   useEffect(() => {
     if (data) {
       const shuffledItems = data.map((post: any) => ({

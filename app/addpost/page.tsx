@@ -8,10 +8,11 @@ import { IconBrandSpotify } from "@tabler/icons-react"
 import { Youtube } from "lucide-react"
 
 import { useToast } from "@/hooks/use-toast"
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { LoadingSpinner } from "@/components/ui/spinner"
 import { Textarea } from "@/components/ui/textarea"
+import Link from "next/link"
 
 const AddPostPage: FC = () => {
   const [link, setLink] = useState<string>("")
@@ -20,7 +21,8 @@ const AddPostPage: FC = () => {
   const [platform, setPlatform] = useState<string | null>(null)
   const router = useRouter()
   const { toast } = useToast()
-  const { token } = useAuth()
+  const { token, isLoggedIn, isLoading: authLoading } = useAuth()
+
 
   const handleLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const url = e.target.value
@@ -70,53 +72,80 @@ const AddPostPage: FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center p-4 space-y-4 max-w-xl mx-auto pt-14">
-      <h1 className="text-2xl font-semibold text-center">Add New Post</h1>
+      {isLoggedIn ? (<>
+        <h1 className="text-2xl font-semibold text-center">Add New Post</h1>
 
-      <div className="w-full space-y-4">
-        <div className="w-full">
-          <label htmlFor="link" className="block text-sm font-medium mb-2">
-            Song Link
-          </label>
-          <div className="flex items-center justify-center space-x-3 mb-2">
-            {platform === "spotify" && (
-              <IconBrandSpotify size={24} className="text-green-500" />
-            )}
-            {platform === "youtube" && (
-              <Youtube size={24} className="text-red-500" />
-            )}
-            <Input
-              id="link"
-              placeholder="Paste your song URL"
-              value={link}
+        <div className="w-full space-y-4">
+          <div className="w-full">
+            <label htmlFor="link" className="block text-sm font-medium mb-2">
+              Song Link
+            </label>
+            <div className="flex items-center justify-center space-x-3 mb-2">
+              {platform === "spotify" && (
+                <IconBrandSpotify size={24} className="text-green-500" />
+              )}
+              {platform === "youtube" && (
+                <Youtube size={24} className="text-red-500" />
+              )}
+              <Input
+                id="link"
+                placeholder="Paste your song URL"
+                value={link}
+                disabled={loading === true} 
+                onChange={handleLinkChange}
+                className="w-full"
+              />
+            </div>
+          </div>
+  
+          <div className="w-full">
+            <label htmlFor="content" className="block text-sm font-medium mb-2">
+              Post Content
+            </label>
+            <Textarea
+              id="content"
+              placeholder="Write about the song..."
+              value={postContent}
+              onChange={handleContentChange}
               disabled={loading === true} 
-              onChange={handleLinkChange}
-              className="w-full"
+              rows={6}
             />
           </div>
-        </div>
-
-        <div className="w-full">
-          <label htmlFor="content" className="block text-sm font-medium mb-2">
-            Post Content
-          </label>
-          <Textarea
-            id="content"
-            placeholder="Write about the song..."
-            value={postContent}
-            onChange={handleContentChange}
-            disabled={loading === true} 
-            rows={6}
-          />
-        </div>
-
-        <Button
-          onClick={handleSubmit}
-          className="w-full"
-          disabled={!link || !postContent || loading === true}
-        >
-          {loading ? <LoadingSpinner /> : "Submit Post"}
-        </Button>
-      </div>
+  
+          <Button
+            onClick={handleSubmit}
+            className="w-full"
+            disabled={!link || !postContent || loading === true}
+          >
+            {loading ? <LoadingSpinner /> : "Submit Post"}
+          </Button>
+        </div></>
+      ) : (
+        <>
+          <p className="max-w-[700px] text-lg text-muted-foreground">
+            Log in or sign up to add posts
+          </p>
+          <div className="flex flex-col md:flex-row gap-2">
+            <Link
+              href={"/signup"}
+              rel="noreferrer"
+              className={buttonVariants()}
+              style={{ minWidth: "100px" }}
+            >
+              Signup
+            </Link>
+            <Link
+              href={"/login"}
+              rel="noreferrer"
+              className={buttonVariants({ variant: "outline" })}
+              style={{ minWidth: "100px" }}
+            >
+              Login
+            </Link>
+          </div>
+        </>
+      )}
+      
     </div>
   )
 }

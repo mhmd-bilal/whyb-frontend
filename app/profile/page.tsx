@@ -2,7 +2,7 @@
 
 "use client";
 
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery, useMutation } from "react-query";
 import { useAuth } from "@/contexts/auth-context";
 import { userApi } from "@/utils/api";
@@ -31,6 +31,7 @@ const MyProfile: React.FC = () => {
   );
 
   const [editableFields, setEditableFields] = useState<User>({
+    username: "",
     name: "",
     email: "",
     bio: "",
@@ -58,13 +59,14 @@ const MyProfile: React.FC = () => {
   useEffect(() => {
     if (data?.user) {
       setEditableFields({
+        username: data.user.username || "",
         name: data.user.name || "",
         email: data.user.email || "",
         bio: data.user.bio || "",
       });
     }
   }, [data]);
-  
+
 
   if (isLoading) {
     return (
@@ -73,7 +75,7 @@ const MyProfile: React.FC = () => {
       </div>
     );
   }
-  
+
   if (error) return <div>Error loading profile</div>;
   if (!data?.user) return <div>User not found</div>;
 
@@ -85,16 +87,24 @@ const MyProfile: React.FC = () => {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
-      {/* User Profile Card */}
       <Card className="border shadow-md rounded-lg">
         <CardHeader className="flex justify-between">
-          <h2 className="text-2xl font-bold pb-0">{user.name}&apos;s Profile</h2>
+          <h2 className="text-4xl font-bold pb-0">@{user.username}&apos;s Profile</h2>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex flex-col md:flex-row gap-6 ">
-            {/* Left Column - Profile Fields */}
-            <div className="flex flex-col gap-0 ">
-              {/* Name Field */}
+            <div className="flex flex-col gap-2">
+              <ProfileInput
+                type="text"
+                label="Username"
+                value={user.username || ""}
+                editableValue={editableFields.username || ""}
+                onChange={(e) =>
+                  setEditableFields({ ...editableFields, username: e.target.value })
+                }
+                onSave={handleSave}
+              />
+
               <ProfileInput
                 type="text"
                 label="Name"
@@ -106,7 +116,6 @@ const MyProfile: React.FC = () => {
                 onSave={handleSave}
               />
 
-              {/* Email Field */}
               <ProfileInput
                 type="text"
                 label="Email"
@@ -117,50 +126,46 @@ const MyProfile: React.FC = () => {
                 }
                 onSave={handleSave}
               />
-
-              {/* Bio Field */}
-              <ProfileInput
-                type="textarea"
-                label="Bio"
-                value={user.bio || ""}
-                editableValue={editableFields.bio || ""}
-                onChange={(e) =>
-                  setEditableFields({ ...editableFields, bio: e.target.value })
-                }
-                onSave={handleSave}
-              />
             </div>
 
-            {/* Right Column - Profile Stats */}
             <div className="flex-1">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 <div>
-                  <p className="text-4xl">{stats.posts_count}</p>
-                  <h4 className="font-semibold text-lg">Posts</h4>
+                  <p className="text-4xl font-bold">{stats.posts_count}</p>
+                  <h4 className="text-muted-foreground">Posts</h4>
                 </div>
                 <div>
-                  <p className="text-4xl">{stats.comments_count}</p>
-                  <h4 className="font-semibold text-lg">Comments</h4>
+                  <p className="text-4xl font-bold">{stats.comments_count}</p>
+                  <h4 className="text-muted-foreground">Comments</h4>
                 </div>
                 <div>
-                  <p className="text-4xl">{stats.followers_count}</p>
-                  <h4 className="font-semibold text-lg">Followers</h4>
-                </div>
-                <div>
-                  <p className="text-4xl">{stats.following_count}</p>
-                  <h4 className="font-semibold text-lg">Following</h4>
+                  <p className="text-4xl font-bold">{stats.likes_count}</p>
+                  <h4 className="text-muted-foreground">Likes</h4>
                 </div>
               </div>
             </div>
+            <div className="flex-1 h-full">
+              <div className="h-full">
+                <ProfileInput
+                  type="textarea"
+                  label="Bio"
+                  value={user.bio || ""}
+                  editableValue={editableFields.bio || ""}
+                  onChange={(e) =>
+                    setEditableFields({ ...editableFields, bio: e.target.value })
+                  }
+                  onSave={handleSave}
+                />
+              </div>
+            </div>
+
           </div>
         </CardContent>
       </Card>
 
-      {/* User Posts */}
       <Card className="border shadow-md rounded-lg mt-6 py-6">
         <CardContent>
-          <h2 className="text-2xl font-bold pb-4">{user.name}&apos;s Posts</h2>
-
+          <h2 className="text-2xl font-bold pb-4">@{user.username}&apos;s Posts</h2>
           <BentoGridSecondDemo data={posts} />
         </CardContent>
       </Card>
