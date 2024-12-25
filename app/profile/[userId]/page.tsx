@@ -10,6 +10,7 @@ import { BentoGridSecondDemo } from "@/components/BentoGridSecondDemo"
 import { UserData } from "@/types"
 import { useParams, useRouter } from "next/navigation"
 import { formatDate } from "@/lib/utils"
+import { BackHome } from "@/functions/useFunction"
 
 const Profile: React.FC = () => {
   const { token } = useAuth()
@@ -28,11 +29,13 @@ const Profile: React.FC = () => {
   if (isLoading) return <div className="h-screen w-full flex items-center justify-center">
     <LoadingSpinner />
   </div>
-  if (error) return <div className="h-screen w-full flex items-center justify-center">
+  if (error) return <div className="h-screen w-full flex flex-col  items-center justify-center">
     Error loading profile
+    <BackHome />
   </div>
-  if (!data?.user) return <div className="h-screen w-full flex items-center justify-center">
+  if (!data?.user) return <div className="h-screen w-full flex flex-col items-center justify-center">
     User not found
+    <BackHome />
   </div>
 
   const handlePost = (id: string) => {

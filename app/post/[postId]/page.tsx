@@ -17,6 +17,7 @@ import { IconHeartFilled } from "@tabler/icons-react"
 import { ConfettiEmoji } from "@/components/ConfettiEmoji"
 import { ArrowLeft, ChevronLeft } from "lucide-react"
 import { formatDate } from "@/lib/utils"
+import { BackHome } from "@/functions/useFunction"
 
 export default function PostDetail() {
   const router = useRouter()
@@ -98,11 +99,13 @@ export default function PostDetail() {
       <LoadingSpinner />
     </div>
   )
-  if (error) return <div className="h-screen w-full flex items-center justify-center">
+  if (error) return <div className="h-screen w-full flex flex-col items-center justify-center">
     Error loading post
+    <BackHome />
   </div>
-  if (!data?.post) return <div className="h-screen w-full flex items-center justify-center">
+  if (!data?.post) return <div className="h-screen w-full flex flex-col items-center justify-center">
     Post not found
+    <BackHome />
   </div>
 
   const { post, comments, likes_count, liked } = data

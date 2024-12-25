@@ -13,6 +13,7 @@ import { BentoGridSecondDemo } from "@/components/BentoGridSecondDemo";
 import ProfileInput from "@/components/ProfileInput";
 import { useToast } from "@/hooks/use-toast"
 import { User, UserData } from "@/types"
+import { BackHome } from "@/functions/useFunction";
 
 const MyProfile: React.FC = () => {
   const { token, userId } = useAuth();
@@ -78,18 +79,20 @@ const MyProfile: React.FC = () => {
     );
   }
 
-  if (error) return <div className="h-screen w-full flex items-center justify-center">
+  if (error) return <div className="h-screen w-full flex flex-col items-center justify-center">
     Error loading profile
+    <BackHome />
   </div>
-  
+
   if (!data?.user) {
     return (
-      <div className="h-screen w-full flex items-center justify-center">
+      <div className="h-screen w-full flex flex-col items-center justify-center">
         User not found
+        <BackHome />
       </div>
     )
   }
-  
+
   const { user, posts, stats } = data;
 
   const handleSave = () => {
