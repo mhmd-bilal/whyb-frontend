@@ -140,7 +140,7 @@ export default function PostDetail() {
                         className="text-xs text-gray-400 cursor-pointer mt-1"
                         onClick={() => handleNavigation(post.user_id)}
                       >
-                        Posted by <span className="underline">@{post.username}</span> on {formatDate(post.date.toString())}
+                        Posted by <span className="underline">@{post.username}</span> {formatDate(post.date.toString()).includes("ago") ? "" : "on"} {formatDate(post.date.toString())}
                       </p>
                     </div>
                     <div className="flex flex-row h-fit gap-3">
