@@ -64,7 +64,7 @@ export const BentoGridItem = ({
   return (
     <div
       className={cn(
-        "w-full cursor-pointer rounded-xl group/bento hover:shadow-xl shadow-input dark:shadow-none dark:bg-card bg-white justify-between flex flex-col space-y-4 hover:scale-110 border z-0 hover:z-10 transition duration-500",
+        "w-full cursor-pointer rounded-2xl group/bento hover:shadow-xl shadow-input dark:shadow-none dark:bg-card bg-white justify-between flex flex-col space-y-4 hover:scale-110 border z-0 hover:z-10 transition duration-500",
         className,
         spanColumns === 2
           ? "md:col-span-2 relative group-hover:z-20"
@@ -91,7 +91,7 @@ export const BentoGridItem = ({
         {header}
         {spanColumns === 2 && (
           <>
-            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-tr from-black to-transparent opacity-100 z-0" />
+            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black to-transparent opacity-100 z-0" />
             <div className="absolute bottom-0 left-0 w-full p-4 z-10">
               <div
                 className="font-sans font-bold text-neutral-200"

@@ -81,7 +81,7 @@ export function Posts() {
             <Input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="xs:text-xs "
+              className="xs:text-xs rounded-full border-solid border"
               placeholder="Search for posts, tags, users, or anything..."
               style={{
                 width: "100%",

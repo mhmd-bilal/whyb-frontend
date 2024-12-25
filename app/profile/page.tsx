@@ -46,12 +46,14 @@ const MyProfile: React.FC = () => {
           description: "Details saved.",
         });
       },
-      onError: (error) => {
-        console.error("Failed to update user:", error);
-        toast({
-          variant: "destructive",
-          description: "Failed to update user.",
-        });
+      onError: (error: unknown) => {
+        if (error instanceof Error) {
+          toast({
+            variant: "destructive",
+            description: error.message,
+          })
+          console.error(error.message)
+        }
       },
     }
   );

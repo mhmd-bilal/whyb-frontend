@@ -37,7 +37,7 @@ export function SignupForm({
   const isValidUsername = (value: string) => /^[a-z0-9_]+$/.test(value);
   const isValidEmail = (value: string) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-
+  const isValidPassword = (value: string): boolean => value.length >= 8
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
@@ -53,7 +53,12 @@ export function SignupForm({
       return;
     }
 
-    setError(null); // Reset error if validations pass
+    if (!isValidPassword(password)) {
+      setError("Password should be atleast 8 characters.");
+      return;
+    }
+
+    setError(null);
 
     const userData = {
       name,
@@ -172,7 +177,7 @@ export function SignupForm({
                 <Button type="submit" className="w-full">
                   Sign Up
                 </Button>
-                {error && <p className="text-red-500">{error}</p>}
+                {error && <p className="text-red-500 text-sm py-2">{error}</p>}
                 <Button variant="outline" className="w-full" disabled>
                   Sign Up with Google
                 </Button>

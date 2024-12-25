@@ -4,7 +4,7 @@ import React from "react"
 import { useParams, useRouter } from "next/navigation"
 import { postsApi } from "@/utils/api"
 import { useAuth } from "@/contexts/auth-context"
-import { IconArrowLeftTail, IconBrandSpotifyFilled } from "@tabler/icons-react"
+import { IconArrowLeftTail, IconBrandSpotifyFilled, IconBrandYoutubeFilled } from "@tabler/icons-react"
 import { useQuery } from "react-query"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
@@ -30,8 +30,14 @@ export default function PostDetail() {
     {
       enabled: !!token && !!postId,
       retry: false,
-      onError: (error) => {
-        console.error("Failed to fetch post:", error)
+      onError: (error: unknown) => {
+        if (error instanceof Error) {
+          toast({
+            variant: "destructive",
+            description: error.message,
+          })
+          console.error(error.message)
+        }
         if (!isLoggedIn) {
           router.push("/login")
         }
@@ -102,7 +108,7 @@ export default function PostDetail() {
       <div
         className="mx-auto w-full px-4 justify-center flex  flex-col flex-1 gap-6"
         style={{
-          background: `radial-gradient(circle at top center, ${post.context_color} -200%, transparent 70%)`,
+          background: `radial-gradient(circle at top center, ${post.context_color} -200%, transparent 50%)`,
           backgroundSize: 'cover',
         }}
       >
@@ -111,11 +117,11 @@ export default function PostDetail() {
             <CardHeader className="hidden md:flex justify-between items-start" />
             <CardContent className="p-4">
               <div className="flex flex-col md:flex-row md:space-x-8">
-                <div className="mb-6 h-full md:mb-0 md:w-1/3">
+                <div className="mb-6 h-full md:mb-0 md:w-1/3 flex">
                   <img
                     src={post.song_image}
                     alt={post.song_name}
-                    className="h-full rounded-lg object-cover shadow-md"
+                    className="h-full rounded-lg object-cover"
                   />
                 </div>
                 <div className="flex w-full flex-col space-y-2 md:w-2/3">
@@ -132,12 +138,28 @@ export default function PostDetail() {
                     </div>
                     <div className="flex flex-row h-fit gap-3">
                       <Button
-                        className="w-full md:w-auto flex items-center justify-center space-x-2 bg-green-500 hover:bg-green-600 min-w-max"
-                        onClick={() => window.open(post.song_url, '_blank')}
+                        className={`w-full md:w-auto flex items-center justify-center space-x-2 ${post.song_url.includes('spotify') ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600'} min-w-max`}
+                        onClick={() => {
+                          if (post.song_url.includes('spotify')) {
+                            window.open(post.song_url, '_blank');
+                          } else if (post.song_url.includes('youtube')) {
+                            window.open(post.song_url, '_blank');
+                          }
+                        }}
                       >
-                        <IconBrandSpotifyFilled />
-                        <span>Listen on Spotify</span>
+                        {post.song_url.includes('spotify') ? (
+                          <>
+                            <IconBrandSpotifyFilled />
+                            <span>Listen on Spotify</span>
+                          </>
+                        ) : (
+                          <>
+                            <IconBrandYoutubeFilled />
+                            <span>Listen on YouTube</span>
+                          </>
+                        )}
                       </Button>
+
 
                       <Badge
                         style={{
