@@ -2,9 +2,7 @@ import { ReactNode } from "react"
 import { useRouter } from "next/navigation"
 
 import { cn } from "@/lib/utils"
-import { Badge } from "./badge"
-import { Heart } from "lucide-react"
-import { IconHeartFilled } from "@tabler/icons-react"
+import { IconHeartFilled, IconMessageCircleFilled } from "@tabler/icons-react"
 
 export const BentoGrid = ({
   className,
@@ -32,6 +30,7 @@ export const BentoGridItem = ({
   description,
   header,
   userId,
+  comments,
   icon,
   contextColor,
   likes,
@@ -46,8 +45,9 @@ export const BentoGridItem = ({
   header?: React.ReactNode
   icon?: React.ReactNode
   spanColumns?: number
-  userId? : string
+  userId?: string
   likes: number
+  comments: number
   date: Date
 }) => {
   const router = useRouter()
@@ -57,7 +57,7 @@ export const BentoGridItem = ({
     }
     return ""
   }
-  
+
   const handleNavigation = () => {
     router.push(`/profile/${userId}`);
   };
@@ -109,8 +109,14 @@ export const BentoGridItem = ({
               >
                 <span>@{description}</span>
                 <div className="flex items-center gap-1 ">
-                  <IconHeartFilled size={10} />
-                  <span>{likes}</span>
+                  <div className="flex items-center gap-1">
+                    <IconMessageCircleFilled size={10} />
+                    <span>{comments || 0}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <IconHeartFilled size={10} />
+                    <span>{likes}</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -127,9 +133,15 @@ export const BentoGridItem = ({
             onClick={handleNavigation}
           >
             <span>@{description}</span>
-            <div className="flex items-center gap-1">
-              <IconHeartFilled size={10} />
-              <span>{likes}</span>
+            <div className="flex items-center gap-1 ">
+              <div className="flex items-center gap-1">
+                <IconMessageCircleFilled size={10} />
+                <span>{comments || 0}</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <IconHeartFilled size={10} />
+                <span>{likes}</span>
+              </div>
             </div>
           </div>
         </div>

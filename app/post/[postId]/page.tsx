@@ -189,33 +189,36 @@ export default function PostDetail() {
           </Card>
         </div>
 
-        <div className="mx-auto max-w-4xl w-full">
-          <Card className="mt-2 max-w-4xl p-4 rounded-lg border-0 bg-transparent">
-            <h3 className="text-lg font-bold mb-4">Comments</h3>
-            <div className="space-y-4">
-              {comments.map((comment, index) => (
-                <Card key={index} className="flex flex-col md:flex-row items-start gap-2 md:gap-6 p-4 border rounded-lg bg-transparent">
-                  <p className="font-medium underline cursor-pointer" onClick={() => handleNavigation(post.user_id)}>@{comment.username}</p>
-                  <p className="text-sm text-gray-300 flex-1">{comment.comment}</p>
-                  <p className="text-sm text-muted-foreground ml-auto w-fit">{formatDate(comment.date)}</p>
-                </Card>
-              ))}
-            </div>
+        {comments && (
+          <div className="mx-auto max-w-4xl w-full">
+            <Card className="mt-2 max-w-4xl p-4 rounded-lg border-0 bg-transparent">
+              <h3 className="text-lg font-bold mb-4">Comments</h3>
+              <div className="space-y-4">
+                {comments.map((comment, index) => (
+                  <Card key={index} className="flex flex-col md:flex-row items-start gap-2 md:gap-6 p-4 border rounded-lg bg-transparent">
+                    <p className="font-medium underline cursor-pointer" onClick={() => handleNavigation(post.user_id)}>@{comment.username}</p>
+                    <p className="text-sm text-gray-300 flex-1">{comment.comment}</p>
+                    <p className="text-sm text-muted-foreground ml-auto w-fit">{formatDate(comment.date)}</p>
+                  </Card>
+                ))}
+              </div>
 
-            <div className="mt-4 flex flex-col space-y-4">
-              <Textarea
-                rows={6}
-                placeholder="Add a comment..."
-                className="xs:text-xs rounded-lg border-b-0 border-solid p-4 border focus:outline-none focus:none"
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-              />
-              <Button onClick={handleAddComment} className="self-end">
-                Submit
-              </Button>
-            </div>
-          </Card>
-        </div>
+              <div className="mt-4 flex flex-col space-y-4">
+                <Textarea
+                  rows={6}
+                  placeholder="Add a comment..."
+                  className="xs:text-xs rounded-lg border-b-0 border-solid p-4 border focus:outline-none focus:none"
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                />
+                <Button onClick={handleAddComment} className="self-end">
+                  Submit
+                </Button>
+              </div>
+            </Card>
+          </div>
+        )}
+
       </div>
     </div>
   )

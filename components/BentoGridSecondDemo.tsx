@@ -19,6 +19,7 @@ type Item = {
   user_id: string
   name: string
   likes: number
+  comments: number
   date: Date
   spanColumns: number
   context_color: string
@@ -41,6 +42,7 @@ export function BentoGridSecondDemo({ data }: any) {
         name: post.username,
         user_id: post.user_id,
         likes: post.likes_count,
+        comments: post.comments_count,
         date: post.date,
         spanColumns: getRandomSpan(),
       }))
@@ -75,8 +77,9 @@ export function BentoGridSecondDemo({ data }: any) {
           title={item.song_name}
           description={item.name}
           userId={item.user_id}
-          likes= {item.likes}
-        date={item.date}
+          likes={item.likes}
+          comments={item.comments}
+          date={item.date}
           header={
             <img
               src={item.song_image}
