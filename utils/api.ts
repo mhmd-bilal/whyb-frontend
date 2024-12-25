@@ -23,7 +23,7 @@ async function fetchApi<T>(
       ...options.headers,
     },
   })
-  console.log(res)
+
   if (!res.ok) {
     const error: ApiError = await res.json().catch(() => ({
       message: "An error occurred",
